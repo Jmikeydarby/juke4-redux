@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, hashHistory, IndexRedirect } from 'react-router';
 import AppContainer from './containers/AppContainer';
+import LyricsContainer from './containers/LyricsContainer';
 import Albums from './components/Albums';
 import Album from './components/Album';
 import FilterableArtistsContainer from './containers/FilterableArtistsContainer';
@@ -22,6 +23,7 @@ ReactDOM.render(
       </Route>
       <Route path="/new-playlist" component={NewPlaylistContainer} />
       <Route path="playlists/:playlistId" component={Playlist} />
+      <Route path="/lyrics" component={LyricsContainer} />
       <IndexRedirect to='/albums' />
     </Route>
   </Router>,
