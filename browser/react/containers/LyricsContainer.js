@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import store from '../store';
 import Lyrics from "../components/Lyrics";
-import { setLyrics } from '../action-creators/lyrics';
-import axios from 'axios';
+import { setLyrics, fetchLyrics } from '../action-creators/lyrics';
 
 
 class LyricsContainer extends Component {
@@ -46,27 +45,11 @@ class LyricsContainer extends Component {
   handleSubmit (evt) {
     evt.preventDefault();
     if (this.state.artistQuery && this.state.songQuery){
-      axios.get(`/api/lyrics/${this.state.artistQuery}/${this.state.songQuery}`)
-      .then( response => {
-        console.log('Response lyric: ', response.data);
-        const lyricAction = setLyrics(response.data.lyric);
-        store.dispatch(lyricAction)
-      })
-      .catch (err => {
-        console.dir(err);
-        if (err.response.status === 404) {
-          const lyricAction = setLyrics("Lyric Not Found");
-          store.dispatch(lyricAction)
-        }else {
-          throw new Error(err);
-        }
-
-      })
+      store.dispatch(fetchLyrics(this.state.artistQuery, this.state.songQuery));
     }
   }
 
   render () {
-    console.log(this.state);
     return (
       <Lyrics
         text={this.state.text}
