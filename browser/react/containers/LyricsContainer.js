@@ -48,13 +48,25 @@ class LyricsContainer extends Component {
     if (this.state.artistQuery && this.state.songQuery){
       axios.get(`/api/lyrics/${this.state.artistQuery}/${this.state.songQuery}`)
       .then( response => {
+        console.log('Response lyric: ', response.data);
         const lyricAction = setLyrics(response.data.lyric);
         store.dispatch(lyricAction)
+      })
+      .catch (err => {
+        console.dir(err);
+        if (err.response.status === 404) {
+          const lyricAction = setLyrics("Lyric Not Found");
+          store.dispatch(lyricAction)
+        }else {
+          throw new Error(err);
+        }
+
       })
     }
   }
 
   render () {
+    console.log(this.state);
     return (
       <Lyrics
         text={this.state.text}

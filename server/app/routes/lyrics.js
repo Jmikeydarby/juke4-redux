@@ -10,7 +10,11 @@ router.get('/:artist/:song', (req, res, next) => {
   request.get(`${lyricsAPIPrefix}?artist=${req.params.artist}&song=${req.params.song}`)
     .then(body => {
       const lyric = parser.toJson(body, {object: true}).GetLyricResult.Lyric;
-      res.send({lyric});
+      if (typeof lyric === 'object'){
+        res.sendStatus(404);
+      }else{
+        res.send({lyric});
+      }
     })
     .catch(next);
 });
